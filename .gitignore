@@ -1,2 +1,12 @@
 desktop.ini
+jkEngine/desktop.ini
 jkEngine/__pycache__
+jkEngine/components_library/desktop.ini
+jkEngine/resources/desktop.ini
+jkEngine/resources/Example Game/desktop.ini
+jkEngine/sfml/desktop.ini
+jkEngine/sfml/__pycache__
+jkEngine/spawnables_library/desktop.ini
+jkEngine/spawnables_library/__pycache__
+jkEngine/systems_library/desktop.ini
+jkEngine/systems_library/__pycache__

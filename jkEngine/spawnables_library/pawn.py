@@ -39,7 +39,7 @@ class Pawn(Spawnable, Config):
             components["sprite"] = sprite
         else:
             texture = Texture.from_file(self.default_texture_file)
-            sprite = Sprite2D(texture)
+            sprite = Sprite2D(texture, 0)
             sprite.position = components["position"]
             sprite.rotation = components["rotation"]
             sprite.zindex = 1

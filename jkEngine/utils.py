@@ -1,4 +1,4 @@
-from jkEngine.sfml import Sprite, Rectangle, Vector2
+from jkEngine.sfml import Sprite, Rectangle, Vector2, Texture
 from math import sqrt
 
 def getClass (classOrInstance):
@@ -146,16 +146,18 @@ class Vector(list):
         return Vector(self[:])
 
 class Sprite2D(Sprite):
-    def __init__ (self, animation):
-        if isinstance(animation, Animation):
-            self.animation = animation
+    def __init__ (self, *args):
+        self.animation = False
+        self.zindex = 0
+        for arg in args:
+            if isinstance(arg, Animation):
+                self.animation = animation
+            if type(arg) is int:
+                self.zindex = arg
     
     def setAnimation (self, animation):
         if isinstance(animation, Animation):
             self.animation = animation
-            
-    animation = False
-    zindex = 0
     
 class Animation():
     def __init__ (self, sprite, animLength, width, height, columns, framesNumber):

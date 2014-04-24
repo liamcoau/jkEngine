@@ -78,7 +78,21 @@ class PhysicsCollisionSystem (TickSystem):
                     #Handle multiple shapes in self.zindices[index][i][0]
                     #Do the box break
                     if self.colliding(self.zindices[index][i][0][0][0], self.zindices[index][j][0][0][0]):
-                        print("Hit!")
+                        self.resolve(self.zindices[index][i][0][0][0], self.zindices[index][j][0][0][0], i, j)
+                        
+    def resolve (self, shape1, shape2, ID1, ID2):
+        if not ID1 in self.aspect["physics"].keys():
+            tl1 = Vector(shape1.position)
+            br1 = tl1.copy().add(Vector(shape1.size))
+            tl2 = Vector(shape2.position)
+            br2 = tl2.copy().add(Vector(shape2.size))
+            self.aspect["position"][ID2][1] += tl1[1] - br2[1]
+        elif not ID2 in self.aspect["physics"].keys():
+            tl1 = Vector(shape1.position)
+            br1 = tl1.copy().add(Vector(shape1.size))
+            tl2 = Vector(shape2.position)
+            br2 = tl2.copy().add(Vector(shape2.size))
+            self.aspect["position"][ID1][1] += tl2[1] - br1[1]
     
     def colliding (self, shape1, shape2):
         def definitive ():
@@ -96,18 +110,18 @@ class PhysicsCollisionSystem (TickSystem):
             #print(tl2[1] >= tl1[1], tl2[1] <= br1[1])
             #print(br2[1] >= tl1[1], br2[1] <= br1[1])
             #print("###")
-            if tl2[0] >= tl1[0] and tl2[0] <= br1[0]:
-                print("1")
-                return definitive()
-            elif br2[0] >= tl1[0] and br2[0] <= br1[0]:
-                print("2")
-                return definitive()
-            elif tl2[1] >= tl1[1] and tl2[1] <= br1[1]:
-                print("3")
-                return definitive()
-            elif br2[1] >= tl1[1] and br2[1] <= br1[1]:
-                print("4")
-                return definitive()
+            if (tl2[0] >= tl1[0] and tl2[0] <= br1[0]) or (br2[0] >= tl1[0] and br2[0] <= br1[0]):
+                if tl2[1] <= br1[1] and br2[1] >= tl1[1]:
+                    return True
+                else:
+                    return False
+            elif (tl2[1] >= tl1[1] and tl2[1] <= br1[1]) or (br2[1] >= tl1[1] and br2[1] <= br1[1]):
+                if tl2[0] <= br1[0] and br2[0] >= tl1[0]:
+                    return True
+                else:
+                    return False
+            else:
+                return False
         elif type(shape1) is RectangleShape and type(shape2) is CircleShape:
             return True
         elif type(shape1) is CircleShape and type(shape2) is RectangleShape:

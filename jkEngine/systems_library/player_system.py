@@ -31,4 +31,4 @@ class PlayerSystem(TickSystem, Config):
         self.world.spawn(Pawn, tag="Pawn", position=Vector(50,50), collision=[{1: [[RectangleShape((80, 120)), (-40, -60)]]}, {"collide": self.pawnCollide}])
         
     def pawnCollide (self, event):
-        pass
+        print("Pawn Collide!!")

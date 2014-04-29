@@ -146,14 +146,12 @@ class Vector(list):
         return Vector(self[:])
 
 class Sprite2D(Sprite):
-    def __init__ (self, *args):
-        self.animation = False
-        self.zindex = 0
-        for arg in args:
-            if isinstance(arg, Animation):
-                self.animation = animation
-            if type(arg) is int:
-                self.zindex = arg
+    animation = False
+    zindex = 0
+
+    def setZindex (self, zindex):
+        if type(zindex) is int:
+            self.zindex = zindex
     
     def setAnimation (self, animation):
         if isinstance(animation, Animation):
@@ -166,6 +164,7 @@ class Animation():
         self.current = 0
         self.time = 0.0
         self.frames = []
+        self.paused = False
         rows = framesNumber // columns
         if (framesNumber % columns) > 0:
             rows += 1
@@ -178,7 +177,8 @@ class Animation():
                     self.frames.append([((column*(width//columns))+1,(row*(height//rows))+1),(width//columns,height//rows)])
         
     def getFrame (self, deltaTime):
-        self.time += deltaTime
+        if not self.paused:
+            self.time += deltaTime
         if self.time >= self.animLength:
             self.time -= self.animLength
             self.current = 0
@@ -189,3 +189,9 @@ class Animation():
     
     def setFrames (self, frames):
         self.frames = frames
+    
+    def pause (self, paused):
+        if paused == True:
+            self.paused = True
+        elif paused == False:
+            self.paused = False

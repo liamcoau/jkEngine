@@ -21,7 +21,7 @@ class PhysicsCollisionSystem (TickSystem):
         for key in self.aspect["physics"].keys():
             comp = self.aspect["physics"][key]
             #1 pixel = 1 dm
-            comp["forces"] = [Vector(0.0, 98.1 * comp["mass"])]
+            comp["forces"] = [Vector(0.0, 3*98.1 * comp["mass"])]
 
     def verlet (self, key, dTime):
         if self.aspect["physics"][key]["mass"] <= 0.0 or not type(self.aspect["position"][key]) is Vector:
@@ -29,11 +29,14 @@ class PhysicsCollisionSystem (TickSystem):
         pos = self.aspect["position"][key]
         phys = self.aspect["physics"][key]
         velocity = pos.copy().sub(phys["previous"]).scale(dTime/phys["lastdTime"])
+        for impulse in phys["impulses"]:
+            velocity.add(impulse.scale(dTime / phys["mass"]))
         phys["previous"] = pos.copy()
         accel = vectSum(phys["forces"]).scale(1 / phys["mass"])
         #print("{0} = dTime, {1} = accel, {2} = vel, {3} = pos".format(dTime, accel.copy().scale(dTime * dTime), velocity.copy().scale(1/dTime), pos))
         pos.add(velocity.add(accel.scale(dTime * dTime)))
 
+    #Deprecated
     #Will not work without vector class
     def euler (self, key, dTime):
         #halfStep doesn't need self parameter
@@ -50,6 +53,11 @@ class PhysicsCollisionSystem (TickSystem):
         comp["momentum"] = vectConst(comp["velocity"], comp["mass"])
         comp["Ek"] = 0.5 * comp["mass"] * dot(comp["velocity"], comp["velocity"])
         comp["Ep"] = 9.81 * comp["mass"] * self.aspect["position"][key][1]
+        
+    class Collision ():
+        def __init__ (self, type, other):
+            self.type = type
+            self.other = other
 
     def collision (self, dTime):
         self.zindices = {}
@@ -77,7 +85,12 @@ class PhysicsCollisionSystem (TickSystem):
                 for j in range(i+1, len(self.zindices[index])):
                     #Handle multiple shapes in self.zindices[index][i][0]
                     #Do the box break
+                    #ERROR - J and I are not actual entity IDs. Must fix
                     if self.colliding(self.zindices[index][i][0][0][0], self.zindices[index][j][0][0][0]):
+                        if "collide" in self.aspect["collision"][i][1].keys():
+                            self.aspect["collision"][i][1]["collide"](self.Collision("touch", j))
+                        if "collide" in self.aspect["collision"][j][1].keys():
+                            self.aspect["collision"][j][1]["collide"](self.Collision("touch", i))
                         self.resolve(self.zindices[index][i][0][0][0], self.zindices[index][j][0][0][0], i, j)
                         
     def resolve (self, shape1, shape2, ID1, ID2):

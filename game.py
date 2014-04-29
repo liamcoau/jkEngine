@@ -10,7 +10,7 @@ from jkEngine.systems_library.camera_system import *
 from jkEngine.systems_library.gui_system import *
 from jkEngine.systems_library.render_system import *
 
-jk = Jk(640, 360, "Example Game")
+jk = Jk(640, 360, "Example Game - RUN!")
 
 #add component types
 jk.world.entityManager.defineComponentType("sprite", Sprite2D)

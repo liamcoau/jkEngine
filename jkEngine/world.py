@@ -44,7 +44,7 @@ class World:
                     else:
                         self.groupManager.addGroup(groups)
                         self.groupManager.addToGroup(entity.id, groups)
-            return entity.id
+            return entity
         else: print("{0} is not a subclass of Spawnable.".format(getClassName(spawnClass)))
         
     def addSys (self, system):

@@ -26,7 +26,7 @@ class Pawn(Spawnable, Config):
         if type(physics) is dict:
             components["physics"] = physics
         else:
-            components["physics"] = {"mass": 50.0, "velocity": Vector(0.0, 0.0), "momentum": Vector(0.0, 0.0), "previous": position, "lastdTime": 1.0, "forces": [], "Ek": 0.0, "Ep": 0.0}
+            components["physics"] = {"mass": 50.0, "velocity": Vector(0.0, 0.0), "momentum": Vector(0.0, 0.0), "previous": position, "lastdTime": 1.0, "forces": [], "impulses": [], "Ek": 0.0, "Ep": 0.0}
         ###Collision###
         collision = kwargs.get("collision")
         if type(collision) is list:
@@ -39,10 +39,10 @@ class Pawn(Spawnable, Config):
             components["sprite"] = sprite
         else:
             texture = Texture.from_file(self.default_texture_file)
-            sprite = Sprite2D(texture, 0)
+            sprite = Sprite2D(texture)
             sprite.position = components["position"]
             sprite.rotation = components["rotation"]
-            sprite.zindex = 1
+            sprite.setZindex(1)
             sprite.setAnimation(Animation(sprite, 0.7, texture.width, texture.height, 8, 8))
             sprite.origin = (40, 60)
             components["sprite"] = sprite

@@ -24,10 +24,9 @@ class PlayerSystem(TickSystem, Config):
         self.jump = self.pawnJump
     
     def pawnJump (self, keypress):
-        if keypress.pressed and self.canJump and (self.clock.elapsed_time.seconds - self.lastJump) > 0.5:
-            print((self.clock.elapsed_time.seconds - self.lastJump))
+        if keypress.pressed and self.canJump and (self.clock.elapsed_time.seconds - self.lastJump) > 0.25:
             self.canJump = False
-            print("jump!")
+            #print("jump!")
             self.pawn["physics"]["impulses"].append(Vector(0, -10000))
             self.lastJump = self.clock.elapsed_time.seconds            
         
@@ -56,7 +55,5 @@ class PlayerSystem(TickSystem, Config):
     def pawnCollide (self, event):
         if self.world.tagManager.getTag(event.other) == "ground geometry":
             self.state = "walking"
-            if not self.canJump:
-                print("lol")
             self.canJump = True
             #print("Pawn Collide!!")

@@ -84,14 +84,12 @@ class PhysicsCollisionSystem (TickSystem):
             for i in range(len(self.zindices[index]) - 1):
                 for j in range(i+1, len(self.zindices[index])):
                     #Handle multiple shapes in self.zindices[index][i][0]
-                    #Do the box break
-                    #ERROR - J and I are not actual entity IDs. Must fix
                     if self.colliding(self.zindices[index][i][0][0][0], self.zindices[index][j][0][0][0]):
-                        if "collide" in self.aspect["collision"][i][1].keys():
-                            self.aspect["collision"][i][1]["collide"](self.Collision("touch", j))
-                        if "collide" in self.aspect["collision"][j][1].keys():
-                            self.aspect["collision"][j][1]["collide"](self.Collision("touch", i))
-                        self.resolve(self.zindices[index][i][0][0][0], self.zindices[index][j][0][0][0], i, j)
+                        if "collide" in self.aspect["collision"][self.zindices[index][i][1]][1].keys():
+                            self.aspect["collision"][self.zindices[index][i][1]][1]["collide"](self.Collision("touch", self.zindices[index][j][1]))
+                        if "collide" in self.aspect["collision"][self.zindices[index][j][1]][1].keys():
+                            self.aspect["collision"][self.zindices[index][j][1]][1]["collide"](self.Collision("touch", self.zindices[index][i][1]))
+                        self.resolve(self.zindices[index][i][0][0][0], self.zindices[index][j][0][0][0], self.zindices[index][i][1], self.zindices[index][j][1])
                         
     def resolve (self, shape1, shape2, ID1, ID2):
         if not ID1 in self.aspect["physics"].keys():

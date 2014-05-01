@@ -171,10 +171,10 @@ class Animation():
         for row in range(rows):
             if len(self.frames) + columns > framesNumber:
                 for column in range(framesNumber % columns):
-                    self.frames.append([((column*(width//columns))+1,(row*(height//rows))+1),(width//columns,height//rows)])
+                    self.frames.append([((column*(width//columns)),(row*(height//rows))),(width//columns,height//rows)])
             else:
                 for column in range(columns):
-                    self.frames.append([((column*(width//columns))+1,(row*(height//rows))+1),(width//columns,height//rows)])
+                    self.frames.append([((column*(width//columns)),(row*(height//rows))),(width//columns,height//rows)])
         
     def getFrame (self, deltaTime):
         if not self.paused:

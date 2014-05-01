@@ -9,7 +9,7 @@ class Camera (Spawnable):
         components = {}
         position = kwargs.get("position")
         if not isinstance(position, Vector):
-            position = Vector(40.0, 60.0)
+            position = Vector(0, 0)
         components["position"] = position
         rotation = kwargs.get("rotation")
         if type(rotation) is float:

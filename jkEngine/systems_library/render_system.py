@@ -38,4 +38,5 @@ class RenderSystem (TickSystem):
         self.zindices = {}
         if self.drawCollision:
             for key in self.aspect["collision"].keys():
-                self.g.draw(self.aspect["collision"][key][0][1][0][0])
+                if -1 in self.aspect["collision"][key][0]:
+                    self.g.draw(self.aspect["collision"][key][0][-1][0][0])

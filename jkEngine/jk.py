@@ -51,6 +51,9 @@ class Jk(Config):
 
     def getGraphicsAccess (self):
         return self.w
+    
+    def exit (self):
+        self.w.close()
 
     @staticmethod
     def getClock ():

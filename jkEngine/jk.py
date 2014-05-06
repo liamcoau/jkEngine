@@ -2,6 +2,7 @@ import jkEngine.sfml as sf
 from jkEngine.world import *
 from jkEngine.abstracts import Config
 
+#The engine itself. Start up jkEngine by creating an instance of Jk.
 class Jk(Config):
     #Constructor
     def __init__ (self, width, height, gameName):
@@ -15,12 +16,11 @@ class Jk(Config):
         self.w.display()
         self.world = World(self)
 
-    #Main loop function
+    #Begins running the engine. Do when all component types and systems are set up.
     def start (self):
         if len(self.startups) > 0:
             for startup in self.startups:
                 startup()
-        #self.playerInput = PlayerInput("PlayerInput.ini")
 
         while (not self.close):
             #Main loop
@@ -40,26 +40,33 @@ class Jk(Config):
         self.w.close()
 
     #Methods
+    
+    #Given a function, will run it when the engine starts.
     def attachStartup (self, startupFunction):
         self.startups.append(startupFunction)
         
+    #Given a function, will call it every cycle.
     def attachUpdate (self, updateFunction):
         updateList.append(updateFunction)
 
+    #Passed on to the addSys method on the world object.
     def addSys (self, system):
         self.world.sysManager.addSys(system)
 
+    #Will return the object of the window the engine is in.
     def getGraphicsAccess (self):
         return self.w
     
+    #Immediately closes the window.
     def exit (self):
         self.w.close()
 
+    #Returns an sfml clock.
     @staticmethod
     def getClock ():
         return sf.Clock()
         
+#If this file is executed, this will open a small example window.
 if __name__ == "__main__":
-    #If jk.py is run, this will open an example
     jk = Jk(400, 400, "jk Engine Example")
     jk.start()

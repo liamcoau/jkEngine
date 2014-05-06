@@ -1,8 +1,11 @@
 from abc import ABCMeta
 
+#Component class is not actually currently used for anything, supposed to be used as base class for all component types.
 class Component(metaclass=ABCMeta):
     pass
 
+
+#Inheriting the Config class will give systems the ability to read from .ini files.
 class Config(metaclass=ABCMeta):
     #Attributes
     selfName = None
@@ -40,6 +43,7 @@ class Config(metaclass=ABCMeta):
         else:
             pass
 
+#Used for classes which run every frame and do calculations involving time.
 class TickClass(metaclass=ABCMeta):
     def __init__ (self):
         from jkEngine.jk import Jk
@@ -55,6 +59,7 @@ class TickClass(metaclass=ABCMeta):
     def tick (self, dTime):
         pass
 
+#Base class for all systems, with some basic functionality.
 class System(metaclass=ABCMeta):
     #Need to keep here because __init__ isn't run by child classes
     aspect = []
@@ -71,26 +76,31 @@ class System(metaclass=ABCMeta):
     def stop (self):
         self.active = False
 
+#Base classes which can be spawned by systems.
 class Spawnable(metaclass=ABCMeta):
     def initComponents (self, kwargs):
         #Initialize components with info from kwargs
         components = {}
         return components
 
+#Systems which want to use TickClass extend from here.
 class TickSystem(System, TickClass):
     def init (self, world):
         super().init(world)
 
+#Systems only for processing entities (tag, group).
 class EntitySystem(System):
-    #System only for processing entities (tag, group)
     pass
 
+#Systems which run every specific time or frame interval.
 class IntervalSystem(System):
     pass
 
+#Systems which are triggered by events.
 class TriggerSystem(System):
     def trigger (self, event):
         pass
 
+#Systems controlling the map.
 class MapSystem(TickSystem):
     pass

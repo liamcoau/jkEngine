@@ -1,3 +1,4 @@
+#Base class for  entities. Essentially just a wrapper for the ID. Methods will be removed to adhere to Entity System design philosophy.
 class Entity:
     def __init__ (self, id, world):
         self.id = id
